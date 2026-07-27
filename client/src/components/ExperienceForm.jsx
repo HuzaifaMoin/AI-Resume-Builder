@@ -35,8 +35,8 @@ const ExperienceForm = ({ data, onChange }) => {
                         experience</p>
                 </div>
                 <button onClick={addExperience} className='flex items-center
-                gap-2 px-3 py-1 text-sm bg-purple-100 text-purple-700
-                rounded hover:bg-purple-200 transition-colors'>
+                gap-2 px-3 py-1 text-sm bg-green-100 text-green-700
+                rounded-lg hover:bg-green-200 transition-colors'>
                     <Plus className="size-4" />
                     Add Experience
                 </button>
@@ -61,34 +61,59 @@ const ExperienceForm = ({ data, onChange }) => {
                                 </button>
                             </div>
                             <div className='grid md:grid-cols-2 gap-3'>
-                                <input value={experience.company || ""} onChange={(e) => 
-                                updateExperience(index, "company", e.target.value)}
+                                <input value={experience.company || ""} onChange={(e) =>
+                                    updateExperience(index, "company", e.target.value)}
                                     type="text" placeholder="Company Name" className="px-3 py-2
                         text-sm rounded-lg" />
 
-                                <input value={experience.position || ""} onChange={(e)=> 
-                                updateExperience(index, "position", e.target.value)}
+                                <input value={experience.position || ""} onChange={(e) =>
+                                    updateExperience(index, "position", e.target.value)}
                                     type="text" placeholder="Job Title" className="px-3 py-2
                         text-sm rounded-lg"/>
 
-                                <input value={experience.start_date || ""} onChange={(e) => 
-                                updateExperience(index, "start_date", e.target.value)}
+                                <input value={experience.start_date || ""} onChange={(e) =>
+                                    updateExperience(index, "start_date", e.target.value)}
                                     type="month" className="px-3 py-2 text-sm rounded-lg" />
 
-                                <input value={experience.end_date || ""} onChange={(e)=> 
-                                updateExperience(index, "end_date", e.target.value)}
-                                    type="month" disabled={experience.is_current}
-                                    className="px-3 py-2 text-sm rounded-lg
-                        disabled:bg-gray-100"/>
+                                <input
+                                    type="month"
+                                    value={
+                                        experience.is_current
+                                            ? ""
+                                            : experience.end_date === "Present"
+                                                ? ""
+                                                : (experience.end_date || "")
+                                    }
+                                    onChange={(e) =>
+                                        updateExperience(index, "end_date", e.target.value)
+                                    }
+                                    disabled={experience.is_current}
+                                    className="px-3 py-2 text-sm rounded-lg"
+                                />
                             </div>
-                            <label className='flex items-center gap-2 cursor-pointer'>
-                                <input type="checkbox" checked={experience.is_current ||
-                                    false} onChange={(e) => (updateExperience(index,
-                                        "is_current", e.target.checked ? true : false))}
-                                    className='rounded border-gray-300 text-blue-600
-                        focus:ring-blue-500'/>
-                                <span className='text-sm text-gray-700'>Currently working
-                                    here</span>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={experience.is_current || false}
+                                    onChange={(e) => {
+                                        const isCurrent = e.target.checked;
+
+                                        const updated = [...data];
+
+                                        updated[index] = {
+                                            ...updated[index],
+                                            is_current: isCurrent,
+                                            end_date: isCurrent ? "" : updated[index].end_date
+                                        };
+
+                                        onChange(updated);
+                                    }}
+                                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                />
+
+                                <span className="text-sm text-gray-700">
+                                    Currently working here
+                                </span>
                             </label>
 
                             <div className='space-y-2'>
@@ -96,15 +121,15 @@ const ExperienceForm = ({ data, onChange }) => {
                                     <label className='text-sm font-medium
                             text-gray-700'>Job Description</label>
                                     <button className='flex items-center gap-1 px-2 py-1
-                            text-xs bg-purple-100 text-purple-700 rounded
-                            hover:bg-purple-200 transition-colors
+                            text-xs bg-green-100 text-green-700 rounded
+                            hover:bg-green-200 transition-colors
                             disabled:opacity-50'>
                                         <Sparkles className='w-3 h-3' />
                                         Enhance with AI
                                     </button>
                                 </div>
-                                <textarea value={experience.description || ""} onChange={(e)=> 
-                                updateExperience(index, "description", e.target.value)}
+                                <textarea value={experience.description || ""} onChange={(e) =>
+                                    updateExperience(index, "description", e.target.value)}
                                     rows={4} className="w-full text-sm px-3 py-2 rounded-lg
                         resize-none" placeholder="Describe your key
                         responsibilities and achievements..."/>

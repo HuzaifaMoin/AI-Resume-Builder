@@ -5,6 +5,7 @@ import Features from '../components/home/Features'
 import Testimonials from '../components/home/Testimonials'
 import CalltoAction from '../components/home/CalltoAction'
 import Footer from '../components/home/Footer'
+import Title from '../components/home/Title'
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
       <Testimonials/>
       <CalltoAction/>
       <Footer/>
+      <Title/>
     </div>
   )
 }
