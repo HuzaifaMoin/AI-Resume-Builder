@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin } from "lucide-react";
+import { MailIcon, Phone, MapPin, Mail } from "lucide-react";
 
 const MinimalImageTemplate = ({ data, accentColor }) => {
     const formatDate = (dateStr) => {
@@ -79,8 +79,9 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                             <div className="space-y-4 text-sm">
                                 {data.education.map((edu, index) => (
                                     <div key={index}>
-                                        <p className="font-semibold uppercase">{edu.degree}</p>
-                                        <p className="text-zinc-600">{edu.institution}</p>
+                                        <p className="font-semibold uppercase">{edu.degree} in</p>
+                                        <p className="font-semibold uppercase">{edu.field}</p>
+                                        <p className="text-zinc-600 uppercase">{edu.institution}</p>
                                         <p className="text-xs text-zinc-500">
                                             {formatDate(edu.graduation_date)}
                                         </p>
