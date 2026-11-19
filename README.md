@@ -1,6 +1,6 @@
 # AI Resume Builder
 
-A full-stack resume builder that lets users create, edit, enhance, import, preview, and share professional resumes. The application uses a React/Vite client and an Express/MongoDB API, with an OpenAI-compatible service for AI writing and resume extraction and ImageKit for profile image uploads.
+A full-stack resume builder that lets users create, edit, enhance, import, preview, and share professional resumes. The application uses a React/Vite client and an Express/MongoDB API, with OpenRouter (free models, through the OpenAI-compatible API) for AI writing and resume extraction and ImageKit for profile image uploads.
 
 ## Features
 
@@ -35,7 +35,7 @@ A full-stack resume builder that lets users create, edit, enhance, import, previ
 - Express 5
 - MongoDB with Mongoose
 - JSON Web Tokens and bcrypt
-- OpenAI Node SDK
+- OpenAI Node SDK (pointed at OpenRouter)
 - ImageKit Node SDK
 - Multer for multipart image uploads
 - CORS and dotenv
@@ -69,7 +69,7 @@ Install the following before starting the project:
 - Node.js 18 or newer (Node.js 20 LTS or newer is recommended).
 - npm.
 - A MongoDB deployment, such as MongoDB Atlas or a local MongoDB server.
-- An OpenAI API key or an API-compatible provider.
+- An OpenRouter API key (free tier works): https://openrouter.ai/keys
 - An ImageKit account and private key if image uploads are enabled.
 
 No root `package.json` exists. Install dependencies separately in `client` and `server`.
@@ -94,13 +94,12 @@ Create `server/.env` with the following values:
 PORT=3000
 MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-host>
 JWT_SECRET=replace-with-a-long-random-secret
-OPENAI_API_KEY=your-openai-or-compatible-provider-key
-OPENAI_MODEL=your-supported-model-name
-OPENAI_BASE_URL=https://api.openai.com/v1
+OPENROUTER_API_KEY=your-openrouter-api-key
+OPENROUTER_MODEL=openrouter/free
 IMAGEKIT_PRIVATE_KEY=your-imagekit-private-key
 ```
 
-`OPENAI_BASE_URL` can be changed for an OpenAI-compatible provider. If the provider uses the OpenAI default endpoint, use `https://api.openai.com/v1` or omit the variable if the installed SDK supplies the default.
+`OPENROUTER_MODEL` is optional and defaults to `openrouter/free`, which routes each request to an available free model. If you set a specific model (for example one ending in `:free`), the server falls back to `openrouter/free` when that model is busy or rate limited. AI requests time out after 45 seconds instead of hanging.
 
 Create `client/.env` when the API is not running at the default local URL:
 
@@ -284,7 +283,7 @@ For any other Node hosting provider, run `npm start` from `server/`, expose the 
 
 ### AI features fail
 
-- Verify `OPENAI_API_KEY`, `OPENAI_MODEL`, and, when needed, `OPENAI_BASE_URL`.
+- Verify `OPENROUTER_API_KEY` and, if set, `OPENROUTER_MODEL`.
 - Confirm the selected model supports chat completions and JSON response format for resume import.
 - Check provider quota, model availability, and the server log for the returned error.
 
